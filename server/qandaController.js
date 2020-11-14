@@ -1,7 +1,9 @@
-const Qanda = require('./db/qanda.js');
+const Question = require('./db/question.js');
+const Answer = require('./db/answer.js');
 
 exports.retrieve = function (req, res) {
-  Qanda.find({})
+  Question.find({})
+    .populate('answers')
     .then((results) => {
       res.status(200).json(results);
     })
@@ -11,7 +13,7 @@ exports.retrieve = function (req, res) {
 }
 
 exports.postQ = function (req, res) {
-  Qanda.create(req.body)
+  Question.create(req.body)
     .then((results) => {
       res.status(200).json(results);
     })
@@ -20,8 +22,18 @@ exports.postQ = function (req, res) {
     })
 }
 
+// exports.postA = function (req, res) {
+//   Answer.create(req.body)
+//     .then((results) => {
+//       res.status(200).json(results);
+//     })
+//     .catch((err) => {
+//       res.status(400).send(err);
+//     })
+// }
+
 exports.retrieveOne = function (req, res) {
-  Qanda.findOne({_id: req.params.id})
+  Question.findOne({_id: req.params.id})
     .then((results) => {
       res.status(200).json(results);
     })
@@ -31,7 +43,7 @@ exports.retrieveOne = function (req, res) {
 }
 
 exports.updateOne = function (req, res) {
-  Qanda.findOneAndUpdate({_id: req.params.id}, req.body)
+  Question.findOneAndUpdate({_id: req.params.id}, req.body)
     .then((results) => {
       res.status(200).json(results);
     })
@@ -40,13 +52,4 @@ exports.updateOne = function (req, res) {
     })
 }
 
-exports.putA = function (req, res) {
-  Qanda.findOneAndUpdate({_id: req.params.id}, req.body)
-    .then((results) => {
-      res.status(200).json(results);
-    })
-    .catch((err) => {
-      res.status(400).send(err);
-    })
-}
 

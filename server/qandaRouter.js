@@ -9,7 +9,4 @@ qandaRouter.route('/qanda/:id')
   .get(qandaController.retrieveOne)
   .put(qandaController.updateOne)
 
-qandaRouter.route('/qanda/ans/:id')
-  .put(qandaController.putA)
-
 module.exports = qandaRouter
