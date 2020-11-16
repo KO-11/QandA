@@ -5,8 +5,13 @@ qandaRouter.route('/qanda')
   .get(qandaController.retrieve)
   .post(qandaController.postQ)
 
-qandaRouter.route('/qanda/:id')
+qandaRouter.route('/qanda/quest/:id')
   .get(qandaController.retrieveOne)
-  .put(qandaController.updateOne)
+
+qandaRouter.route('/qanda/ans')
+  .post(qandaController.postA)
+
+qandaRouter.route('/qanda/ans/:id')
+  .put(qandaController.updateA)
 
 module.exports = qandaRouter

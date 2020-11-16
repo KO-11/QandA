@@ -22,6 +22,16 @@ exports.postQ = function (req, res) {
     })
 }
 
+exports.postA = function (req, res) {
+  Question.create(req.body)
+    .then((results) => {
+      res.status(200).json(results);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    })
+}
+
 // exports.postA = function (req, res) {
 //   Answer.create(req.body)
 //     .then((results) => {
@@ -34,6 +44,7 @@ exports.postQ = function (req, res) {
 
 exports.retrieveOne = function (req, res) {
   Question.findOne({_id: req.params.id})
+    .populate('answers')
     .then((results) => {
       res.status(200).json(results);
     })
@@ -42,8 +53,8 @@ exports.retrieveOne = function (req, res) {
     })
 }
 
-exports.updateOne = function (req, res) {
-  Question.findOneAndUpdate({_id: req.params.id}, req.body)
+exports.updateA = function (req, res) {
+  Answer.findOneAndUpdate({_id: req.params.id}, req.body)
     .then((results) => {
       res.status(200).json(results);
     })

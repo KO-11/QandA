@@ -10,14 +10,11 @@ function Question(props) {
       {props.data.map((quest) => {
         return(
           <div>
-          <h2>user.question - date posted</h2>
+          <h2>{quest.user} - {quest.date}</h2>
+          <span>{quest.answers.length} answers</span>
           <h1>{quest.question}</h1>
           <button>Answer the question</button>
-          <Answers answer={quest.answer}/>
-          <div>Helpuful?</div>
-          <button>Yes - {quest.yes}</button>
-          <button>No - {quest.no}</button>
-          <button>Report as inappropriate</button>
+          <Answers answers={quest.answers} questid={quest._id}/>
           </div>
         )
       })}
