@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Question from './Question.jsx';
 import Header from './Header.jsx';
+import Example from './Example.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ export default class App extends React.Component {
       <div>
       <Header />
       <Question data={this.state.questions}/>
+      {/* <Example /> */}
       </div>
     )
 

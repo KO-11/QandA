@@ -7,56 +7,60 @@ export default class Answers extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      answers: this.props.answers,
+      answers: [],
       topans: {},
       clickHelped: false,
       reported: false,
 
     }
     this.getAnswers = this.getAnswers.bind(this);
-    this.topRated = this.topRated.bind(this);
     this.clickYes = this.clickYes.bind(this);
     this.clickNo = this.clickNo.bind(this);
     this.clickReport = this.clickReport.bind(this);
   }
 
   componentDidMount() {
-    this.topRated();
+    this.getAnswers();
   }
+
+  // componentDidUpdate() {
+  //   this.getAnswers();
+  // }
 
   getAnswers() {
     axios.get(`/api/qanda/quest/${this.props.questid}`)
       .then((results) => {
+        for (let i = 0; i < results.data.answers.length; i++) {
+          if(this.state.topans.yes === undefined) {
+            this.setState({
+              topans: results.data.answers[i]
+            })
+          }
+          if(results.data.answers[i].yes > this.state.topans.yes) {
+            this.setState({
+              topans: results.data.answers[i]
+            })
+          }
+        }
         this.setState({
           answers: results.data.answers
         })
       })
-  }
+      .catch((err) => {
+        console.error(err);
+      })
 
-  topRated() {
-    this.getAnswers()
-    for (let i = 0; i < this.state.answers.length; i++) {
-      if(this.state.topans.yes === undefined) {
-        this.setState({
-          topans: this.state.answers[i]
-        })
-      }
-      if(this.state.answers[i].yes > this.state.topans.yes) {
-        this.setState({
-          topans: this.state.answers[i]
-        })
-      }
-    }
   }
 
   clickYes(e) {
     let newYes = this.state.topans.yes + 1;
     axios.put(`/api/qanda/ans/${e.target.className}`, {yes: newYes})
       .then((results) => {
-        this.topRated();
+        this.getAnswers();
         this.setState({
           clickHelped: !this.state.clickHelped
         })
+        console.log(this.state);
       })
       .catch((err) => {
         console.error(err);
@@ -67,7 +71,7 @@ export default class Answers extends React.Component {
     let newNo = this.state.topans.no + 1;
     axios.put(`/api/qanda/ans/${e.target.className}`, {no: newNo})
       .then((results) => {
-        this.topRated();
+        this.getAnswers();
         this.setState({
           clickHelped: !this.state.clickHelped
         })
@@ -80,7 +84,7 @@ export default class Answers extends React.Component {
   clickReport(e) {
     axios.put(`/api/qanda/ans/${e.target.className}`, {flag: true})
       .then((results) => {
-        this.topRated();
+        this.getAnswers();
         this.setState({
           reported: !this.state.reported
         })
@@ -102,7 +106,7 @@ export default class Answers extends React.Component {
           <button className={this.state.topans._id} onClick={this.clickReport}>Report as inappropriate</button>
         </div>
       )
-    } else if(this.state.clickedHelped && !this.state.reported) {
+    } else if(this.state.clickHelped && !this.state.reported) {
       return (
         <div>
           <div>{this.state.topans.user} - {this.state.topans.date}</div>
@@ -113,7 +117,7 @@ export default class Answers extends React.Component {
           <button className={this.state.topans._id} onClick={this.clickReport}>Report as inappropriate</button>
         </div>
       )
-    } else if(!this.state.clickedHelped && this.state.reported) {
+    } else if(!this.state.clickHelped && this.state.reported) {
       return (
         <div>
           <div>{this.state.topans.user} - {this.state.topans.date}</div>
