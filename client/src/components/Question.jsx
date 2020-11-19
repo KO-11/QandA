@@ -4,16 +4,15 @@ import App from './App.jsx'
 import Answers from './Answers.jsx'
 
 function Question(props) {
-  console.log(props);
   return(
     <div>
       {props.data.map((quest) => {
         return(
           <div>
-          <h2>{quest.user} - {quest.date}</h2>
+          <p>{quest.user} - {quest.date}</p>
           <span>{quest.answers.length} answers</span>
-          <h1>{quest.question}</h1>
-          <button>Answer the question</button>
+          <p onClick={props.showModal} className={quest._id}>{quest.question}</p>
+          <button onClick={props.showModal} className={quest._id}>Answer the question</button>
           <Answers answers={quest.answers} questid={quest._id}/>
           </div>
         )
