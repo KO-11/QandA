@@ -1,5 +1,31 @@
+.Title {
+  float: left;
+  font: 2.133rem "Stuart", "Geogia", "serif";
+  line-height: 1.33;
+}
 
-.Modal {
+.QuestionButton {
+  float: right;
+  color: white;
+  background-color: #426c90;
+  font-family: "Roboto","Helvetica Neue","Helvetica","Arial";
+  font-size: 16px;
+  line-height: 28px;
+  font-style: normal;
+  font-weight: 700;
+  border-radius: 3px;
+  border-color: #426c90;
+}
+
+.NumQuest {
+  float: left;
+}
+
+.SortBy {
+  float: right;
+}
+
+.QModal {
   position: fixed;
   z-index: 500;
   background-color: white;
@@ -8,14 +34,135 @@
   box-shadow: 1px 1px 1px black;
   padding: 16px;
   left: 15%;
-  top: 30%;
+  top: 15%;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
+  overflow-y: auto;
 }
 
-@media (min-width: 600px) {
-  .Modal {
-      width: 500px;
-      left: calc(50% - 250px);
-  }
+.Modal {
+  position: absolute;
+  z-index: 500;
+  background-color: white;
+  width: auto;
+  max-width: 90%;
+  height: auto;
+  max-height: 100%;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px black;
+  padding: 16px;
+  left: 15%;
+  top: 15%;
+  box-sizing: border-box;
+  transition: all 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
 }
+
+.PostAnswer {
+  float: left;
+  font-size: 25px;
+  padding: 10 10 10 0;
+}
+
+.PostAnswerButton {
+  float: left;
+  color: white;
+  background-color: #426c90;
+  font-family: "Roboto","Helvetica Neue","Helvetica","Arial";
+  font-size: 16px;
+  line-height: 28px;
+  font-style: normal;
+  font-weight: 700;
+  border-radius: 3px;
+  border-color: #426c90;
+}
+
+.CloseButton {
+  float: right;
+  margin-top: -10px;
+  margin-right: -10px;
+  cursor:pointer;
+  color: #fff;
+  border-radius: 30px;
+  background: black;
+  font-size: 25px;
+  font-style: normal;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 0px;
+  padding: 11px 3px;
+}
+
+
+.ModalBackground {
+  z-index: 499;
+  background-color: rgba(0,0,0,0.4);
+  width: 100vw;
+  height: 100vw;
+  position: fixed;
+}
+
+.User {
+  font-family: "Roboto","Helvetica Neue","Helvetica","Arial";
+  font-size: 16px;
+  font-weight: 700;
+  float: left;
+  margin: 5px 5px 5px 0px;
+}
+
+.Date {
+  font-family: "Roboto","Helvetica Neue","Helvetica","Arial";
+  font-size: small;
+  float: left;
+  text-align: center;
+  margin: 5px;
+}
+
+.QuestionBlock {
+  padding: 25px;
+  border-top:    1px solid black;
+  margin: 10px 5px 5px 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.QuestionString {
+  float: left;
+  font-family: "Roboto","Helvetica Neue","Helvetica","Arial";
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 10 10 0;
+}
+
+.NumAns {
+  font-weight: bold;
+  font-size: small;
+  float: right;
+  margin: 5px;
+}
+
+.AnsLength {
+  float: right;
+  margin-top: 0px;
+}
+
+.AnsButton {
+  float: left;
+  background-color: transparent;
+  border-radius: 2px;
+  border: 1px solid #b8b8b8;
+  padding: 5px;
+  margin: 20px 20px 20px 0px;
+}
+
+.AnsUser {
+  float: left;
+}
+
+.AnsDate {
+  float: left;
+}
+
+

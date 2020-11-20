@@ -23,24 +23,23 @@ exports.postQ = function (req, res) {
 }
 
 exports.postA = function (req, res) {
-  Question.create(req.body)
-    .then((results) => {
-      res.status(200).json(results);
-    })
-    .catch((err) => {
-      res.status(400).send(err);
+  let q =  req.body.q;
+  let a = req.body.a;
+  Answer.create(a)
+    .then((ansResults) => {
+      console.log(ansResults, 'ans');
+      console.log(ansResults._id, 'ans id');
+      Question.findOne(q)
+        .then((questResults) => {
+          questResults.answers.push(ansResults._id);
+          questResults.save();
+          res.status(200).json(questResults);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        })
     })
 }
-
-// exports.postA = function (req, res) {
-//   Answer.create(req.body)
-//     .then((results) => {
-//       res.status(200).json(results);
-//     })
-//     .catch((err) => {
-//       res.status(400).send(err);
-//     })
-// }
 
 exports.retrieveOne = function (req, res) {
   Question.findOne({_id: req.params.id})

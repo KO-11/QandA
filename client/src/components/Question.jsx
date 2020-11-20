@@ -8,12 +8,26 @@ function Question(props) {
     <div>
       {props.data.map((quest) => {
         return(
-          <div>
-          <p>{quest.user} - {quest.date}</p>
-          <span>{quest.answers.length} answers</span>
-          <p onClick={props.showModal} className={quest._id}>{quest.question}</p>
-          <button onClick={props.showModal} className={quest._id}>Answer the question</button>
-          <Answers answers={quest.answers} questid={quest._id}/>
+          <div className="QuestionBlock">
+            <div>
+              <p className="User">{quest.user}</p> <p className="Date" >{props.computeDate(quest.date)}</p>
+              <p className="NumAns">{quest.answers.length} </p>
+            </div>
+            <div>
+              <p className="QuestionString" onClick={props.showModal} name={quest._id}>{quest.question}</p>
+              <p className="AnsLength">answers</p>
+            </div>
+            <div>
+              <button className="AnsButton" onClick={props.showModal} name={quest._id}>Answer the question</button>
+            </div>
+            <div>
+              <Answers
+              answers={quest.answers}
+              questid={quest._id}
+              show={props.show}
+              showModal={props.showModal}
+              computeDate={props.computeDate}/>
+            </div>
           </div>
         )
       })}

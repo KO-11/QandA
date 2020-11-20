@@ -14,15 +14,28 @@ export default class Modal extends React.Component {
   }
 
   render() {
-    console.log(this.props, 'props');
       if(!this.props.show){
           return null;
       }
-    return <div className="Modal">
-            <h1>Post answer</h1>
-            <div>{this.props.question.user} - {this.props.question.date} {this.props.question.answers.length}</div>
-            <div>{this.props.question.question}</div>
-            <Answers answers={this.props.question.answers} questid={this.props.question._id} show={this.props.show}/>
+    return <div className="Modal" style={{display: "flex", flexDirection: "column"}}>
+            <div>
+              <p className="PostAnswer">Post Answer</p>
+              <button className="CloseButton" name={undefined} onClick={this.props.showModal}>X</button>
+            </div>
+            <div>
+              <p className="User">{this.props.question.user}</p>
+              <p className="Date">{this.props.computeDate(this.props.question.date)} </p>
+              <p className="NumAns">{this.props.question.answers.length}</p>
+            </div>
+            <div>
+              <p className="QuestionString">{this.props.question.question}</p>
+              <p className="AnsLength">Answers</p>
+            </div>
+            <Answers answers={this.props.question.answers}
+            questid={this.props.question._id}
+            show={this.props.show}
+            showModal={this.props.showModal}
+            computeDate={this.props.computeDate}/>
            </div>;
   }
 }

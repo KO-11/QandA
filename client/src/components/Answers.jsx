@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Question from './Question.jsx';
+import Helpful from './Helpful.jsx'
 
 export default class Answers extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      answers: [],
-      topans: {},
+      answers: [{user: 'user', answer: 'answer', date: Date(), yes: 0, no: 0, flag: false}],
       answer: {},
       clickHelped: false,
       reported: false,
@@ -20,9 +20,6 @@ export default class Answers extends React.Component {
 
     }
     this.getAnswers = this.getAnswers.bind(this);
-    this.clickYes = this.clickYes.bind(this);
-    this.clickNo = this.clickNo.bind(this);
-    this.clickReport = this.clickReport.bind(this);
     this.answerQuest = this.answerQuest.bind(this);
     this.typing = this.typing.bind(this);
     this.submitAnswer = this.submitAnswer.bind(this);
@@ -35,68 +32,19 @@ export default class Answers extends React.Component {
   getAnswers() {
     axios.get(`/api/qanda/quest/${this.props.questid}`)
       .then((results) => {
-        for (let i = 0; i < results.data.answers.length; i++) {
-          if(this.state.topans.yes === undefined) {
-            this.setState({
-              topans: results.data.answers[i]
-            })
-          }
-          if(results.data.answers[i].yes > this.state.topans.yes) {
-            this.setState({
-              topans: results.data.answers[i]
-            })
-          }
+        results.data.answers.sort((a,b) => {
+          return b.yes - a.yes
+        })
+        if(results.data.answers.length > 0) {
+          this.setState({
+            answers: results.data.answers
+          })
         }
-        this.setState({
-          answers: results.data.answers
-        })
       })
       .catch((err) => {
         console.error(err);
       })
 
-  }
-
-  clickYes(e) {
-    let newYes = parseInt(e.target.name) + 1;
-    axios.put(`/api/qanda/ans/${e.target.id}`, {yes: newYes})
-      .then((results) => {
-        this.getAnswers();
-        this.setState({
-          clickHelped: !this.state.clickHelped
-        })
-        console.log(this.state.clickHelped);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-  }
-
-  clickNo(e) {
-    let newNo = parseInt(e.target.name) + 1;
-    axios.put(`/api/qanda/ans/${e.target.id}`, {no: newNo})
-      .then((results) => {
-        this.getAnswers();
-        this.setState({
-          clickHelped: !this.state.clickHelped
-        })
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-  }
-
-  clickReport(e) {
-    axios.put(`/api/qanda/ans/${e.target.id}`, {flag: true})
-      .then((results) => {
-        this.getAnswers();
-        this.setState({
-          reported: !this.state.reported
-        })
-      })
-      .catch((err) => {
-        console.error(err);
-      })
   }
 
   answerQuest() {
@@ -110,39 +58,57 @@ export default class Answers extends React.Component {
     this.setState({
       [e.target.id]: e.target.value
     })
-    console.log(this.state);
   }
 
-  submitAnswer() {
-    let ans = {user: this.state.nameValue, answer: this.state.ansValue, date: Date(), yes: 0, no: 0, flag: false}
+  submitAnswer(e) {
+    e.preventDefault();
+    let ans = {user: this.state.nameValue, answer: this.state.ansValue, date: Date(), yes: 0, no: 0, flag: false};
+    let q = {_id: this.props.questid};
+    let req = {a: ans, q: q}
+
+    axios.post(`/api/qanda/ans`, req)
+      .then((results) => {
+        this.setState({
+          user: '',
+          answer: ''
+
+        })
+        this.props.showModal(e);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
   }
 
   render() {
       if(!this.props.show) {
         return (
-          <div>
-            <div>{this.state.topans.user} - {this.state.topans.date}</div>
-            <div>{this.state.topans.answer}</div>
-            <div>Helpful?</div>
-            <button id={this.state.topans._id} name={this.state.topans.yes} disabled={this.state.clickHelped} onClick={this.clickYes}>Yes - {this.state.topans.yes}</button>
-            <button id={this.state.topans._id} name={this.state.topans.no} disabled={this.state.clickHelped} onClick={this.clickNo}>No - {this.state.topans.no}</button>
-            <button id={this.state.topans._id} disabled={this.state.reported} onClick={this.clickReport}>Report as inappropriate</button>
+          <div style={{display: "flex", flexDirection: "column"}}>
+            <div>
+              <p className="AnsUser">{this.state.answers[0].user}</p>
+              <p className="AnsDate">{this.props.computeDate(this.state.answers[0].date)}</p>
+            </div>
+            <div>
+              <div className="AnswerString">{this.state.answers[0].answer}</div>
+            </div>
+            <Helpful answer={this.state.answers[0]}
+            show={this.props.show}
+            getAnswers={this.getAnswers}
+            />
           </div>
         )
       } else if (this.props.show && !this.state.ansQ) {
-        console.log(this.state.answers);
         return (
           <div>
-          {this.state.answers.map((answer) => {
+          {this.state.answers.map((answer, index) => {
             return (
               <div>
-                <div>{answer.user} - {answer.date}</div>
+                <div>{answer.user} - {this.props.computeDate(answer.date)}</div>
                 <div>{answer.answer}</div>
-                <div>Helpful?</div>
-                <button id={answer._id} name={answer.yes} disabled={this.state.clickHelped} onClick={this.clickYes}>Yes - {answer.yes}</button>
-                <button id={answer._id} name={answer.no} disabled={this.state.clickHelped} onClick={this.clickNo}>No - {answer.no}</button>
-                <button id={answer._id} disabled={this.state.reported} onClick={this.clickReport}>Report as inappropriate</button>
+                <Helpful answer={answer}
+                key={index}
+                getAnswers={this.getAnswers}/>
               </div>
             )
           })}
@@ -156,19 +122,18 @@ export default class Answers extends React.Component {
       } else {
         return (
           <div>
-          {this.state.answers.map((answer) => {
+          {this.state.answers.map((answer, index) => {
             return (
               <div>
-                <div>{answer.user} - {answer.date}</div>
+                <div>{answer.user} - {this.props.computeDate(answer.date)}</div>
                 <div>{answer.answer}</div>
-                <div>Helpful?</div>
-                <button id={answer._id} name={answer.yes} disabled={this.clickHelped} onClick={this.clickYes}>Yes - {answer.yes}</button>
-                <button id={answer._id} name={answer.no} disabled={this.clickHelped} onClick={this.clickNo}>No - {answer.no}</button>
-                <button id={answer._id} disabled={this.reported} onClick={this.clickReport}>Report as inappropriate</button>
+                <Helpful answer={answer}
+                key={index}
+                getAnswers={this.getAnswers}/>
               </div>
             )
           })}
-          <form>
+          <form name={this.props.questid}>
             <label>Answer*
               <input type="textarea" id="ansValue" placeholder="Answer the question..." onClick={this.answerQuest} onChange={this.typing}/>
             </label>
@@ -183,7 +148,7 @@ export default class Answers extends React.Component {
             </label>
             <input type="checkbox" checked={this.state.agrees} />
             <span>Disclaimer fineprint...</span>
-            <button onClick={this.submitAnswer}>Post Answer</button>
+            <button className="PostAnswerButton" name={this.props.questid} onClick={this.submitAnswer}>Post Answer</button>
           </form>
           </div>
         )
