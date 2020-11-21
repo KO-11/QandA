@@ -60,7 +60,7 @@ export default class Helpful extends React.Component {
     if(!this.props.show) {
       return(
         <div>
-          <div>Helpful?</div>
+          <div className="Helpful" >Helpful?</div>
           <button className="AnsButton" id={this.props.answer._id} name={this.props.answer.yes} disabled={this.state.clickHelped} onClick={this.clickYes}>Yes - {this.props.answer.yes}</button>
           <button className="AnsButton" id={this.props.answer._id} name={this.props.answer.no} disabled={this.state.clickHelped} onClick={this.clickNo}>No - {this.props.answer.no}</button>
           <button className="AnsButton" id={this.props.answer._id} disabled={this.state.reported} onClick={this.clickReport}>Report as inappropriate</button>
@@ -69,7 +69,7 @@ export default class Helpful extends React.Component {
     } else {
       return(
         <div>
-          <div>Helpful?</div>
+          <div className="Helpful" >Helpful?</div>
           <button className="AnsButton" id={this.props.answer._id} name={this.props.answer.yes} disabled={this.state.clickHelped} onClick={this.clickYes}>Yes - {this.props.answer.yes}</button>
           <button className="AnsButton" id={this.props.answer._id} name={this.props.answer.no} disabled={this.state.clickHelped} onClick={this.clickNo}>No - {this.props.answer.no}</button>
           <button className="AnsButton" id={this.props.answer._id} disabled={this.state.reported} onClick={this.clickReport}>Report as inappropriate</button>
