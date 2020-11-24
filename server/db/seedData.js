@@ -3,7 +3,7 @@ const Question = require('./question.js');
 const Answer = require('./answer.js');
 const db = require('./index.js');
 
-var seedQ = function() {
+exports.seedQ = function() {
   for (var i = 0; i < 100; i++) {
     var user = faker.fake("{{name.firstName}}");
     var date = faker.fake("{{date.recent}}");
@@ -11,11 +11,7 @@ var seedQ = function() {
     var quest = {user: user, date: date, question: q, answers: []};
     Question.create(quest);
   }
-  seedA();
-}
-
-var seedA = function() {
-
+  // seedA();
   for(var i = 0; i < 300; i++) {
 
     var user = faker.fake("{{name.firstName}}");
@@ -43,8 +39,12 @@ var seedA = function() {
     })
 
   }
-
 }
-seedQ();
+
+// exports.seedA = function() {
+
+
+// }
+// seedQ();
 
 

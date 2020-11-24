@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoUri = 'mongodb://localhost/qanda'
+const mongoUri = 'mongodb://database/qanda'
 
 mongoose.Promise = global.Promise;
 
