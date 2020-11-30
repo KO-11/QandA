@@ -17,7 +17,7 @@ export default class Helpful extends React.Component {
 
   clickYes(e) {
     let newYes = parseInt(e.target.name) + 1;
-    axios.put(`/api/qanda/ans/${e.target.id}`, {yes: newYes})
+    axios.put(`http://52.33.93.196:3002/api/qanda/ans/${e.target.id}`, {yes: newYes})
       .then((results) => {
         this.props.getAnswers();
         this.setState({
@@ -31,7 +31,7 @@ export default class Helpful extends React.Component {
 
   clickNo(e) {
     let newNo = parseInt(e.target.name) + 1;
-    axios.put(`/api/qanda/ans/${e.target.id}`, {no: newNo})
+    axios.put(`http://52.33.93.196:3002/api/qanda/ans/${e.target.id}`, {no: newNo})
       .then((results) => {
         this.props.getAnswers();
         this.setState({
@@ -44,7 +44,7 @@ export default class Helpful extends React.Component {
   }
 
   clickReport(e) {
-    axios.put(`/api/qanda/ans/${e.target.id}`, {flag: true})
+    axios.put(`http://52.33.93.196:3002/api/qanda/ans/${e.target.id}`, {flag: true})
       .then((results) => {
         this.props.getAnswers();
         this.setState({

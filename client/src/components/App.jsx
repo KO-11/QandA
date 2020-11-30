@@ -36,7 +36,7 @@ export default class App extends React.Component {
       }
     }
     if(isQuest) {
-      axios.get(`/api/qanda/quest/${e.target.name}`)
+      axios.get(`http://52.33.93.196:3002/api/qanda/quest/${e.target.name}`)
         .then((results) => {
           this.setState({
             show: !this.state.show,
@@ -57,7 +57,7 @@ export default class App extends React.Component {
   }
 
   getData() {
-    axios.get('/api/qanda')
+    axios.get('http://52.33.93.196:3002/api/qanda')
       .then((results) => {
         this.setState({
           questions: results.data

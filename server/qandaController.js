@@ -2,6 +2,7 @@ const Question = require('./db/question.js');
 const Answer = require('./db/answer.js');
 
 exports.retrieve = function (req, res) {
+  console.log('get questions');
   Question.find({})
     .populate('answers')
     .then((results) => {

@@ -30,7 +30,7 @@ export default class Answers extends React.Component {
   }
 
   getAnswers() {
-    axios.get(`/api/qanda/quest/${this.props.questid}`)
+    axios.get(`http://52.33.93.196:3002/api/qanda/quest/${this.props.questid}`)
       .then((results) => {
         results.data.answers.sort((a,b) => {
           return b.yes - a.yes
@@ -66,7 +66,7 @@ export default class Answers extends React.Component {
     let q = {_id: this.props.questid};
     let req = {a: ans, q: q}
 
-    axios.post(`/api/qanda/ans`, req)
+    axios.post(`http://52.33.93.196:3002/api/qanda/ans`, req)
       .then((results) => {
         this.setState({
           user: '',
@@ -169,7 +169,7 @@ export default class Answers extends React.Component {
               </div>
               <div>
                 <input className="DisclaimerBox" type="checkbox" checked={this.state.agrees} />
-                <p className="Disclaimer">Disclaimer fineprint...</p>
+                <p className="Disclaimer">I agree to the terms &amp; conditions</p>
               </div>
               <div>
                 <p className="Disclaimer">Disclaimer 2</p>
